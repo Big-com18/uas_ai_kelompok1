@@ -1,0 +1,39 @@
+# === Virtual environment ===
+venv/
+.venv/
+env/
+
+# === Python cache & bytecode ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# === Dataset mentah (JANGAN commit, besar & tidak dibutuhkan saat deploy) ===
+data/raw/
+
+# === Jupyter checkpoints ===
+.ipynb_checkpoints/
+
+# === Editor / IDE ===
+.vscode/
+.idea/
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === Environment variables / secrets ===
+.env
+
+# === Logs ===
+*.log
+
+# ==========================================================
+# CATATAN: JANGAN ignore folder/file di bawah ini,
+# karena dibutuhkan app.py saat deploy ke Streamlit:
+#   models/cnn_apple_disease.h5
+#   models/class_labels.json
+#   src/train.py, src/predict.py, src/expert_system.py
+#   requirements.txt
+# ==========================================================
