@@ -9,7 +9,6 @@ import json
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
-from PIL import UnidentifiedImageError
 
 MODEL_PATH = "models/cnn_apple_disease.h5"
 LABELS_PATH = "models/class_labels.json"
@@ -18,18 +17,10 @@ IMG_SIZE = (128, 128)
 
 def load_artifacts():
     """Load model CNN dan mapping label. Panggil sekali saja di awal aplikasi."""
-    try:
-        model = load_model(MODEL_PATH)
-        with open(LABELS_PATH, "r") as f:
-            idx_to_label = json.load(f)
-        return model, idx_to_label
-    except FileNotFoundError as e:
-        raise RuntimeError(
-            f"File model/label tidak ditemukan: {e}. "
-            "Pastikan models/cnn_apple_disease.h5 dan models/class_labels.json ada di repo."
-        )
-    except Exception as e:
-        raise RuntimeError(f"Gagal memuat model: {e}")
+    model = load_model(MODEL_PATH)
+    with open(LABELS_PATH, "r") as f:
+        idx_to_label = json.load(f)
+    return model, idx_to_label
 
 
 def predict_image(model, idx_to_label, img_path_or_file):
@@ -42,44 +33,15 @@ def predict_image(model, idx_to_label, img_path_or_file):
         img_path_or_file: path file gambar ATAU file-like object (dari Streamlit uploader)
 
     Returns:
-        dict: {"success": bool, "label": str, "confidence": float, "error": str or None}
+        (predicted_label, confidence_score)
     """
-    try:
-        img = image.load_img(img_path_or_file, target_size=IMG_SIZE)
-    except UnidentifiedImageError:
-        return {
-            "success": False,
-            "label": None,
-            "confidence": None,
-            "error": "File yang diunggah bukan gambar yang valid. Harap unggah file JPG/PNG.",
-        }
-    except Exception as e:
-        return {
-            "success": False,
-            "label": None,
-            "confidence": None,
-            "error": f"Gagal memproses gambar: {e}",
-        }
+    img = image.load_img(img_path_or_file, target_size=IMG_SIZE)
+    img_array = image.img_to_array(img) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
 
-    try:
-        img_array = image.img_to_array(img) / 255.0
-        img_array = np.expand_dims(img_array, axis=0)
+    predictions = model.predict(img_array)
+    predicted_idx = int(np.argmax(predictions[0]))
+    confidence = float(np.max(predictions[0]))
+    predicted_label = idx_to_label[str(predicted_idx)]
 
-        predictions = model.predict(img_array)
-        predicted_idx = int(np.argmax(predictions[0]))
-        confidence = float(np.max(predictions[0]))
-        predicted_label = idx_to_label[str(predicted_idx)]
-
-        return {
-            "success": True,
-            "label": predicted_label,
-            "confidence": confidence,
-            "error": None,
-        }
-    except Exception as e:
-        return {
-            "success": False,
-            "label": None,
-            "confidence": None,
-            "error": f"Gagal melakukan prediksi: {e}",
-        }
+    return predicted_label, confidence
