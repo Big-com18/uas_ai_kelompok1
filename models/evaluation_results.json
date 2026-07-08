@@ -1,0 +1,38 @@
+{
+  "accuracy": 0.9401,
+  "precision_macro": 0.9314,
+  "recall_macro": 0.929,
+  "f1_macro": 0.9284,
+  "confusion_matrix": [
+    [
+      104,
+      9,
+      4,
+      9
+    ],
+    [
+      0,
+      124,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      51,
+      4
+    ],
+    [
+      6,
+      6,
+      0,
+      317
+    ]
+  ],
+  "class_names": [
+    "Apple___Apple_scab",
+    "Apple___Black_rot",
+    "Apple___Cedar_apple_rust",
+    "Apple___healthy"
+  ]
+}
