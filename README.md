@@ -93,8 +93,8 @@ F1-Score, serta contoh kasus yang salah diklasifikasikan (edge case).
 
 ## Live Demo
 
-- Streamlit: `<isi link setelah deploy>`
-- Artikel Medium: `<isi link setelah publikasi>`
+- Streamlit: `<https://uas-ai03-kelompok1.streamlit.app/>`
+- Artikel Medium: `<https://medium.com/@ferrysinaga61/asisten-ai-di-saku-petani-mendiagnosis-penyakit-apel-dengan-computer-vision-dan-sistem-pakar-d5846f65838f?sharedUserId=ferrysinaga61>`
 
 ## Referensi
 
