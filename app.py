@@ -47,11 +47,17 @@ if uploaded_file is not None:
     try:
         img = Image.open(uploaded_file)
         st.image(img, caption="Gambar yang diunggah", use_container_width=True)
-    except Exception:
-        st.error(
+    except Exception as e:
+        error_message = (
             "File yang diunggah tidak dapat dibuka sebagai gambar. "
             "Harap unggah file berformat JPG atau PNG."
         )
+        st.error(error_message)
+        st.json({
+            "status_code": 400,
+            "error": error_message,
+            "detail": str(e),
+        })
         st.stop()
 
     with st.spinner("Menganalisis gambar..."):
